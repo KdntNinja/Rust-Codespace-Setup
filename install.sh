@@ -6,12 +6,10 @@ echo -e "\e[1;32mUpdating package lists...\e[0m"
 sudo apt update
 
 # Install Rust if not installed
-if ! command -v rustc &>/dev/null; then
-    echo -e "\e[1;34mInstalling Rust...\e[0m"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    # Ensure Rust is available in Zsh
-    source "$HOME/.cargo/env"
-fi
+echo -e "\e[1;34mInstalling Rust...\e[0m"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# Ensure Rust is available in Zsh
+source "$HOME/.cargo/env"
 
 echo -e "\e[1;32mInstalling dependencies...\e[0m"
 sudo apt install -y $(echo "zsh git curl wget unzip fzf direnv htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline" | tr ' ' '\n' | xargs)
@@ -132,9 +130,6 @@ plugins=(
 # Source Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Source Nix
-source ~/.nix-profile/etc/profile.d/nix.sh
-
 # Load FZF
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
@@ -163,9 +158,6 @@ alias h="history"
 alias d="dust"
 alias t="htop"
 alias reload="source ~/.zshrc"
-
-# Custom functions
-source ~/.package_management.zsh
 
 # Configure Powerlevel10k prompt if not already set
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
