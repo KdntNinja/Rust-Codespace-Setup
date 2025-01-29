@@ -8,6 +8,13 @@ sudo apt update
 echo -e "\e[1;32mInstalling dependencies...\e[0m"
 sudo apt install -y $(echo "zsh git curl wget unzip fzf direnv htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline" | tr ' ' '\n' | xargs)
 
+# Install Rust if not installed
+if ! command -v rustc &>/dev/null; then
+    echo -e "\e[1;34mInstalling Rust...\e[0m"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    # Ensure Rust is available in Zsh
+    source "$HOME/.cargo/env"
+fi
 
 # Install Oh My Zsh if not installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
