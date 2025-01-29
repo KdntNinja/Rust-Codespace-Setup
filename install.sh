@@ -3,59 +3,26 @@
 set -e  # Exit immediately if a command fails
 
 echo -e "\e[1;32mUpdating package lists...\e[0m"
-sudo apt update -y
+sudo apt update
 
-# Check if curl is installed
-if ! command -v curl &>/dev/null; then
-    echo -e "\e[1;34mInstalling curl...\e[0m"
-    sudo apt install -y curl
-fi
+echo -e "\e[1;32mInstalling dependencies...\e[0m"
+sudo apt install -y $(echo "zsh git curl wget unzip fzf direnv htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo" | tr ' ' '\n' | xargs)
 
-# Check if direnv is installed
-if ! command -v direnv &>/dev/null; then
-    echo -e "\e[1;34mInstalling direnv...\e[0m"
-    sudo apt install -y direnv
-fi
+# Speed up Cargo builds by setting the number of parallel jobs and enabling incremental builds
+export CARGO_BUILD_JOBS=$(nproc)  # Use all available CPU cores for parallel builds
+export CARGO_INCREMENTAL=1  # Enable incremental builds
 
-# Check if Nix is installed
-if ! command -v nix-env &>/dev/null; then
-    echo -e "\e[1;34mInstalling Nix...\e[0m"
-    
-    # Install Nix using the official installation script
-    curl -L https://nixos.org/nix/install | sh
+# Install Rust if not installed
+command -v rustc &>/dev/null || { echo -e "\e[1;34mInstalling Rust...\e[0m"; curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; source "$HOME/.cargo/env"; }
+rustup component add rust-analyzer rls
 
-    # Add Nix to the system path for the current user
-    . "$HOME/.nix-profile/etc/profile.d/nix.sh"
-    
-    echo -e "\e[1;32mNix installation complete!\e[0m"
-else
-    echo -e "\e[1;32mNix is already installed.\e[0m"
-fi
-
-# Install Rust via Nix if not installed
-if ! command -v rustc &>/dev/null; then
-    echo -e "\e[1;34mInstalling Rust via Nix...\e[0m"
-    nix-env -iA nixpkgs.rust
-    echo -e "\e[1;32mRust installation complete!\e[0m"
-else
-    echo -e "\e[1;32mRust is already installed.\e[0m"
-fi
-
-# Ensure Rust is available in Zsh
-source "$HOME/.cargo/env"
-
-# Install system dependencies via apt
-echo -e "\e[1;32mInstalling system dependencies...\e[0m"
-sudo apt install -y \
-    zsh git curl wget unzip fzf htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline
-
-# Install Oh My Zsh in the background
+# Install Oh My Zsh if not installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo -e "\e[1;34mInstalling Oh My Zsh...\e[0m"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended &
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-# Install Powerlevel10k theme in the background
+# Install Powerlevel10k theme
 if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
     echo -e "\e[1;34mInstalling Powerlevel10k...\e[0m"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" &
@@ -79,16 +46,18 @@ for repo in "${PLUGINS[@]}"; do
         git clone --depth=1 "https://github.com/$repo.git" "$ZSH_CUSTOM/plugins/$PLUGIN_NAME" &
     fi
 done
-
-# Install exa and dust via Nix if they are not installed
-for pkg in exa dust; do
-    if ! command -v $pkg &>/dev/null; then
-        echo -e "\e[1;34mInstalling $pkg via Nix...\e[0m"
-        nix-env -iA nixpkgs.$pkg &
-    fi
-done
-
 wait  # Wait for all background jobs to finish
+
+# Install exa and dust via Cargo (since they are not in Ubuntu 20.04 repos)
+if ! command -v exa &>/dev/null; then
+    echo -e "\e[1;34mInstalling exa...\e[0m"
+    cargo install --release exa
+fi
+
+if ! command -v dust &>/dev/null; then
+    echo -e "\e[1;34mInstalling dust...\e[0m"
+    cargo install --release du-dust
+fi
 
 # Ensure ~/.cargo/bin is in the PATH
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> "$HOME/.zshrc"
@@ -162,6 +131,9 @@ plugins=(
 # Source Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
+# Source Nix
+source ~/.nix-profile/etc/profile.d/nix.sh
+
 # Load FZF
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
@@ -210,7 +182,7 @@ fi
 
 echo -e "\e[1;32mInstallation complete! Restart your terminal or run 'zsh' to start using it.\e[0m"
 
-# Install rust-analyzer and rls if necessary
-rustup component add rust-analyzer rls
+# Ensure Rust is available in Zsh
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> "$HOME/.zshrc"
 
 echo -e "\e[1;32mSystem updated! Rust and Zsh are ready.\e[0m"
