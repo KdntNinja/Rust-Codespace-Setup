@@ -52,12 +52,12 @@ wait  # Wait for all background jobs to finish
 # Install exa and dust via Cargo (since they are not in Ubuntu 20.04 repos)
 if ! command -v exa &>/dev/null; then
     echo -e "\e[1;34mInstalling exa...\e[0m"
-    cargo install --release exa
+    cargo install exa
 fi
 
 if ! command -v dust &>/dev/null; then
     echo -e "\e[1;34mInstalling dust...\e[0m"
-    cargo install --release du-dust
+    cargo install du-dust
 fi
 
 # Ensure ~/.cargo/bin is in the PATH
