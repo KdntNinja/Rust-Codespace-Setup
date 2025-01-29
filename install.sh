@@ -14,6 +14,7 @@ export CARGO_INCREMENTAL=1  # Enable incremental builds
 
 # Install Rust if not installed
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+export PATH="$HOME/.cargo/bin:$PATH"
 rustup component add rust-analyzer rls
 
 # Install Oh My Zsh if not installed
