@@ -5,9 +5,6 @@ set -e  # Exit immediately if a command fails
 echo -e "\e[1;32mUpdating package lists...\e[0m"
 sudo apt update
 
-echo -e "\e[1;32mInstalling dependencies...\e[0m"
-sudo apt install -y $(echo "zsh git curl wget unzip fzf direnv htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline" | tr ' ' '\n' | xargs)
-
 # Install Rust if not installed
 if ! command -v rustc &>/dev/null; then
     echo -e "\e[1;34mInstalling Rust...\e[0m"
@@ -15,6 +12,9 @@ if ! command -v rustc &>/dev/null; then
     # Ensure Rust is available in Zsh
     source "$HOME/.cargo/env"
 fi
+
+echo -e "\e[1;32mInstalling dependencies...\e[0m"
+sudo apt install -y $(echo "zsh git curl wget unzip fzf direnv htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline" | tr ' ' '\n' | xargs)
 
 # Install Oh My Zsh if not installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
