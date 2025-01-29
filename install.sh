@@ -44,11 +44,10 @@ fi
 # Ensure Rust is available in Zsh
 source "$HOME/.cargo/env"
 
-# Install system dependencies via apt in parallel
+# Install system dependencies via apt
 echo -e "\e[1;32mInstalling system dependencies...\e[0m"
 sudo apt install -y \
-    zsh git curl wget unzip fzf direnv htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline \
-    &
+    zsh git curl wget unzip fzf htop ripgrep bat tesseract-ocr python3 python3-pip python3-venv build-essential jq cargo fonts-powerline
 
 # Install Oh My Zsh in the background
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
