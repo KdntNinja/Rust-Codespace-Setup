@@ -13,7 +13,7 @@ export CARGO_BUILD_JOBS=$(nproc)  # Use all available CPU cores for parallel bui
 export CARGO_INCREMENTAL=1  # Enable incremental builds
 
 # Install Rust if not installed
-command -v rustc &>/dev/null || { echo -e "\e[1;34mInstalling Rust...\e[0m"; curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; source "$HOME/.cargo/env"; }
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 rustup component add rust-analyzer rls
 
 # Install Oh My Zsh if not installed
