@@ -16,7 +16,16 @@ export CARGO_INCREMENTAL=1  # Enable incremental builds
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 export PATH="$HOME/.cargo/bin:$PATH"
 rustup component add rust-analyzer rls rust-src
-cargo check --workspace --message-format=json-diagnostic-rendered-ansi --manifest-path /workspaces/Rust-Course/Cargo.toml --keep-going --all-targets
+
+# Source the Cargo environment file
+. "$HOME/.cargo/env"
+
+# Remove incorrect manifest path and update cargo check command
+if [ ! -f "Cargo.toml" ]; then
+    cargo init
+fi
+cargo check --workspace --message-format=json-diagnostic-rendered-ansi --keep-going --all-targets
+
 rustup update
 cargo clean
 
