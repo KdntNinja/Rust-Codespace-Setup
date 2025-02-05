@@ -145,9 +145,6 @@ plugins=(
 # Source Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Source Nix
-source ~/.nix-profile/etc/profile.d/nix.sh
-
 # Load FZF
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
