@@ -196,10 +196,6 @@ echo -e "\e[1;32mInstallation complete! Restart your terminal or run 'zsh' to st
 # Ensure Rust is available in Zsh
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> "$HOME/.zshrc"
 
-echo "SETUP LAZY VIM"
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
-
 echo -e "\e[1;32mSystem updated! Rust and Zsh are ready.\e[0m"
 
 
