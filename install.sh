@@ -155,7 +155,7 @@ export EDITOR='nvim'
 # Enhanced and useful aliases
 alias ls="exa --icons"
 alias ll="exa -alF --icons"
-alias la="exa -A --icons"
+alias la="exa -a --icons"
 alias l="exa -CF --icons"
 alias cat="bat --paging=never"
 alias man="bat -pp --paging=always --pager='less -R'"
