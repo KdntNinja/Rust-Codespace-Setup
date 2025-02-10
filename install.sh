@@ -123,7 +123,7 @@ setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_SILENT
-setopt EXTENDED_GLOB
+setopt EXTENDED_OB
 
 # Plugins to load
 plugins=(
@@ -165,8 +165,7 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias gs="git status"
 alias gc="git commit -m"
-alias gp="git push"
-alias gl="git pull"
+alias gp="git pull"
 alias gpom="git push origin master"
 alias c="clear"
 alias h="history"
