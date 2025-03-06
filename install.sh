@@ -123,7 +123,7 @@ setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_SILENT
-setopt EXTENDED_OB
+setopt EXTENDED_GLOB
 
 # Plugins to load
 plugins=(
