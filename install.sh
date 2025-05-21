@@ -15,7 +15,7 @@ export CARGO_INCREMENTAL=1  # Enable incremental builds
 # Install Rust if not installed
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 export PATH="$HOME/.cargo/bin:$PATH"
-rustup component add rust-analyzer rls rust-src
+rustup component add rust-analyzer rust-src
 
 # Source the Cargo environment file
 . "$HOME/.cargo/env"
@@ -196,5 +196,4 @@ echo -e "\e[1;32mInstallation complete! Restart your terminal or run 'zsh' to st
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> "$HOME/.zshrc"
 
 echo -e "\e[1;32mSystem updated! Rust and Zsh are ready.\e[0m"
-
 
