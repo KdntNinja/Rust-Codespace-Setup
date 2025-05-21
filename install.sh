@@ -24,7 +24,7 @@ rustup component add rust-analyzer rust-src
 if [ ! -f "Cargo.toml" ]; then
     cargo init
 fi
-cargo check --workspace --message-format=json-diagnostic-rendered-ansi --keep-going --all-targets
+cargo check --workspace --keep-going --all-targets
 
 rustup update
 cargo clean
